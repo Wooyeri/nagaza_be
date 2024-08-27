@@ -1,6 +1,7 @@
 package com.rookies2.nagaza.jwt;
 
 import com.rookies2.nagaza.dto.CustomUserDetails;
+import com.rookies2.nagaza.entity.User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -54,12 +55,12 @@ public class JWTFilter extends OncePerRequestFilter {
         String username = jwtUtil.getUsername(token);
         String role = jwtUtil.getRole(token);
 
-        User User = new User();
-        User.setUsername(username);
-        User.setPassword("temppassword");
-        User.setRole(role);
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword("temppassword");
+        user.setRole(role);
 
-        CustomUserDetails customUserDetails = new CustomUserDetails(User);
+        CustomUserDetails customUserDetails = new CustomUserDetails(user);
 
         Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
 

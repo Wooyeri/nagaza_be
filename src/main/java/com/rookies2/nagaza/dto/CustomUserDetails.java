@@ -1,5 +1,6 @@
 package com.rookies2.nagaza.dto;
 
+import com.rookies2.nagaza.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -8,11 +9,11 @@ import java.util.Collection;
 
 public class CustomUserDetails  implements UserDetails {
 
-    private final User User;
+    private final User user;
 
-    public CustomUserDetails(User User) {
+    public CustomUserDetails(User user) {
 
-        this.User = User;
+        this.user = user;
     }
 
 
@@ -26,7 +27,7 @@ public class CustomUserDetails  implements UserDetails {
             @Override
             public String getAuthority() {
 
-                return User.getRole();
+                return user.getRole();
             }
         });
 
@@ -36,13 +37,13 @@ public class CustomUserDetails  implements UserDetails {
     @Override
     public String getPassword() {
 
-        return User.getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
 
-        return User.getUsername();
+        return user.getUsername();
     }
 
     @Override

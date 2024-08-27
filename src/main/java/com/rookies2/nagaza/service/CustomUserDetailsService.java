@@ -1,6 +1,7 @@
 package com.rookies2.nagaza.service;
 
 import com.rookies2.nagaza.dto.CustomUserDetails;
+import com.rookies2.nagaza.entity.User;
 import com.rookies2.nagaza.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
