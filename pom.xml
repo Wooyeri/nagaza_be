@@ -120,6 +120,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>nagaza_be</finalName>
 	</build>
 
 </project>
