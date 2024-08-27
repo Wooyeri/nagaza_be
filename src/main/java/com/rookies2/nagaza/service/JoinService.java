@@ -29,7 +29,7 @@ public class JoinService {
             return;
         }
 
-        UserEntity data = new UserEntity();
+        User data = new User();
 
         data.setUsername(username);
         data.setPassword(bCryptPasswordEncoder.encode(password));
