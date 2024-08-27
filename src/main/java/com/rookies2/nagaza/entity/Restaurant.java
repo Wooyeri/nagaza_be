@@ -1,9 +1,11 @@
 package com.rookies2.nagaza.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 
 @Entity
+@Getter
 @Table(name = "RESTAURANT")
 public class Restaurant {
 
