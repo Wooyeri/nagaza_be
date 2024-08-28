@@ -9,8 +9,8 @@ public class MovieDTO {
     private String posterUrl;
     private String cast;
     private String rating;
-    private Integer emotionRating;
-    private Integer likeCount;
+    private Integer emotionRating; 
+    private Integer likeCount; 
 
-    // Getters and Setters
+    // Getters and Setters (Lombok을 통해 자동 생성)
 }

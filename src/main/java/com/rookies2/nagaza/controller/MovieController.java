@@ -5,6 +5,7 @@ import com.rookies2.nagaza.dto.MovieDetailDTO;
 import com.rookies2.nagaza.entity.Movie;
 import com.rookies2.nagaza.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,9 +33,14 @@ public class MovieController {
      * @param id 조회할 Movie의 ID
      * @return 조회된 MovieDetailDTO 또는 null
      */
+
     @GetMapping("/{id}")
-    public MovieDetailDTO getMovieById(@PathVariable Integer id) {
-        return movieService.getMovieById(id);
+    public ResponseEntity<MovieDetailDTO> getMovieDetail(@PathVariable Integer id) {
+        MovieDetailDTO movie = movieService.getMovieDetailById(id); // 수정된 부분
+        if (movie == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(movie);
     }
 
     /**

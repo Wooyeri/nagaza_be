@@ -56,20 +56,18 @@ public class SecurityConfig {
                 .httpBasic((auth) -> auth.disable());
 
 
+        // 모든 요청을 허용
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/joinProc","/join").permitAll()
-                        .requestMatchers("/admin").hasRole("ADMIN")
-                        .anyRequest().authenticated());
+                        .anyRequest().permitAll());
 
+        // JWT 및 로그인 필터 비활성화 (주석 처리)
+        // http
+        //         .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+        // http
+        //         .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
-
-//        http
-//                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
-        http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
-
-        //세션 설정
+        // 세션 설정
         http
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
