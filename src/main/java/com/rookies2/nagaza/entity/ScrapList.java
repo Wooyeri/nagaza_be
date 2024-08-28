@@ -20,6 +20,10 @@ public class ScrapList {
     @Column(nullable = false)
     private String name;  // 스크랩 리스트 이름
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @OneToMany(mappedBy = "scrapList", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ScrapMovie> scrapMovies;  // 스크랩된 영화 리스트
 }
