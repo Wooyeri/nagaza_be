@@ -60,6 +60,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/login", "/", "/joinProc","/join").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/api/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated());
 
 
@@ -68,6 +69,9 @@ public class SecurityConfig {
 //                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
         http
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
+        http
+                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         //세션 설정
         http

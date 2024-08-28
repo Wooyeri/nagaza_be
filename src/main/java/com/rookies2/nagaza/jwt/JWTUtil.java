@@ -39,6 +39,8 @@ public class JWTUtil {
     public String createJwt(String username, String role, Long expiredMs) {
 
         log.error("!!!!!!!!!!!!!! {} ", username);
+        log.error("!!!!!!!!!!!!!! {} ", role);
+
         return Jwts.builder()
                 .claim("username", username)
                 .claim("role", role)

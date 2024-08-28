@@ -1,5 +1,6 @@
 package com.rookies2.nagaza.service;
 
+<<<<<<< HEAD
 import com.rookies2.nagaza.dto.RestaurantDTO;
 import com.rookies2.nagaza.dto.RestaurantDetailDTO;
 import com.rookies2.nagaza.entity.Restaurant;
@@ -70,3 +71,13 @@ public class RestaurantService {
         }
     }
 }
+=======
+import com.rookies2.nagaza.dto.RestaurantDto;
+
+public interface RestaurantService {
+    RestaurantDto getRestaurantList(int id);
+    RestaurantDto toggleLike(Integer restaurantId, Integer userId);
+    boolean isLiked(Integer restaurantId, Integer userId);
+
+}
+>>>>>>> origin/feature/403/Success
