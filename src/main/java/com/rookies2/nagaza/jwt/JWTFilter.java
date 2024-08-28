@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,18 +28,23 @@ public class JWTFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String requestURI = request.getRequestURI();
 
+        if (requestURI.equals("/login") || requestURI.equals("/joinProc") || requestURI.equals("/join") || requestURI.equals("/")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         //request에서 Authorization 헤더를 찾음
-        String authorization= request.getHeader("Authorization");
+//        String authorization= request.getHeader("Authorization");
+        String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        log.error(authorization);
-        log.error(authorization.split(" ")[1]);
+        log.error("@@@@@!@!!!!!{} ", authorization);
+        log.error("zzzzzzzzzzzzzzzzzz {} ", authorization.split(" ")[1]);
 
         //Authorization 헤더 검증
         if (authorization == null || !authorization.startsWith("Bearer ")) {
 
-            System.out.println("token null");
-            log.error(">>>>>>>>>>>>>>> error");
+            log.error(">>>>>>>>>>>>>>> TOKEN NULL");
             filterChain.doFilter(request, response);
 
             //조건이 해당되면 메소드 종료 (필수)
@@ -56,7 +62,6 @@ public class JWTFilter extends OncePerRequestFilter {
             //조건이 해당되면 메소드 종료 (필수)
             return;
         }
-
 
         String username = jwtUtil.getUsername(token);
         String role = jwtUtil.getRole(token);

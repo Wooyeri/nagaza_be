@@ -4,6 +4,7 @@ import com.rookies2.nagaza.dto.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -15,6 +16,9 @@ import org.springframework.stereotype.Component;
 import java.util.Collection;
 import java.util.Iterator;
 
+
+
+@Slf4j
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
@@ -57,6 +61,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
 
         response.addHeader("Authorization", "Bearer " + token);
+        log.error("@@@@@@@@ {} ", token);
     }
 
     @Override

@@ -19,21 +19,28 @@ public class RestaurantDto {
     private Integer emotionRating;
     private Integer likeCount;
 
-    public static RestaurantDto EntityToDto(Restaurant restaurant) {
-        if (restaurant == null) {
-            return null;
+    public RestaurantDto(Restaurant restaurant) {
+        if (restaurant != null) {
+            this.id = restaurant.getId();
+            this.name = restaurant.getName();
+            this.posterUrl = restaurant.getPosterUrl();
+            this.foodType = restaurant.getFoodType();
+            this.reviewSummary = restaurant.getReviewSummary();
+            this.reviews = restaurant.getReviews();
+            this.emotionRating = restaurant.getEmotionRating();
+            this.likeCount = restaurant.getLikeCount();
         }
-
-        RestaurantDto dto = new RestaurantDto();
-        dto.setId(restaurant.getId());
-        dto.setName(restaurant.getName());
-        dto.setPosterUrl(restaurant.getPosterUrl());
-        dto.setFoodType(restaurant.getFoodType());
-        dto.setReviewSummary(restaurant.getReviewSummary());
-        dto.setReviews(restaurant.getReviews());
-        dto.setEmotionRating(restaurant.getEmotionRating());
-        dto.setLikeCount(restaurant.getLikeCount());
-
-        return dto;
     }
+
+//    public RestaurantDto(Restaurant restaurant) {
+//        RestaurantDto dto = new RestaurantDto();
+//        dto.setId(restaurant.getId());
+//        dto.setName(restaurant.getName());
+//        dto.setPosterUrl(restaurant.getPosterUrl());
+//        dto.setFoodType(restaurant.getFoodType());
+//        dto.setReviewSummary(restaurant.getReviewSummary());
+//        dto.setReviews(restaurant.getReviews());
+//        dto.setEmotionRating(restaurant.getEmotionRating());
+//        dto.setLikeCount(restaurant.getLikeCount());
+//    }
 }
