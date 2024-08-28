@@ -14,19 +14,16 @@ public class RestaurantDto {
     private String name;
     private String posterUrl;
     private String foodType;
-    private String reviewSummary;
-    private String reviews;
     private Integer emotionRating;
     private Integer likeCount;
 
+    // Constructor to map from Restaurant entity to DTO
     public RestaurantDto(Restaurant restaurant) {
         if (restaurant != null) {
             this.id = restaurant.getId();
             this.name = restaurant.getName();
             this.posterUrl = restaurant.getPosterUrl();
             this.foodType = restaurant.getFoodType();
-            this.reviewSummary = restaurant.getReviewSummary();
-            this.reviews = restaurant.getReviews();
             this.emotionRating = restaurant.getEmotionRating();
             this.likeCount = restaurant.getLikeCount();
         }

@@ -35,15 +35,7 @@ public class MovieService {
     }
 
     private MovieDTO convertToDTO(Movie movie) {
-        MovieDTO dto = new MovieDTO();
-        dto.setId(movie.getId());
-        dto.setTitle(movie.getTitle());
-        dto.setPosterUrl(movie.getPosterUrl());
-        dto.setCast(movie.getCast());
-        dto.setRating(movie.getRating());
-        dto.setEmotionRating(movie.getEmotionRating()); 
-        dto.setLikeCount(movie.getLikeCount()); 
-        return dto;
+        return new MovieDTO(movie); // 'movie' 객체를 생성자에 전달
     }
 
     private MovieDetailDTO convertToDetailDTO(Movie movie) {

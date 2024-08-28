@@ -35,14 +35,7 @@ public class HotelService {
     }
 
     private HotelDTO convertToDTO(Hotel hotel) {
-        HotelDTO dto = new HotelDTO();
-        dto.setId(hotel.getId());
-        dto.setName(hotel.getName());
-        dto.setPosterUrl(hotel.getPosterUrl());
-        dto.setLocation(hotel.getLocation());
-        dto.setEmotionRating(hotel.getEmotionRating()); 
-        dto.setLikeCount(hotel.getLikeCount()); 
-        return dto;
+        return new HotelDTO(hotel); // 'hotel' 객체를 생성자에 전달
     }
 
     private HotelDetailDTO convertToDetailDTO(Hotel hotel) {

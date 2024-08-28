@@ -1,10 +1,13 @@
 package com.rookies2.nagaza.controller;
 
-import com.rookies2.nagaza.dto.ScrapListDTO;
-import com.rookies2.nagaza.entity.ScrapList;
-import com.rookies2.nagaza.entity.ScrapMovie;
+import com.rookies2.nagaza.dto.HotelDTO;
+import com.rookies2.nagaza.dto.MovieDTO;
+import com.rookies2.nagaza.dto.RestaurantDto;
 import com.rookies2.nagaza.service.ScrapService;
+import com.rookies2.nagaza.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,56 +19,64 @@ public class ScrapController {
     @Autowired
     private ScrapService scrapService;
 
-    /**
-     * 모든 스크랩 리스트를 조회하는 엔드포인트입니다.
-     *
-     * @return 모든 ScrapListDTO의 목록
-     */
-    @GetMapping
-    public List<ScrapListDTO> getAllScrapLists() {
-        return scrapService.getAllScrapLists();
+    // 영화 스크랩 목록 조회
+    @GetMapping("/movie/list")
+    public ResponseEntity<List<MovieDTO>> getMovieScrapList(@AuthenticationPrincipal User user) {
+        List<MovieDTO> scrapList = scrapService.getMovieScrapList(user.getId());
+        return ResponseEntity.ok(scrapList);
     }
 
-    /**
-     * 이름으로 스크랩 리스트를 조회하는 엔드포인트입니다.
-     *
-     * @param name 조회할 ScrapList의 이름
-     * @return 조회된 ScrapListDTO 또는 null
-     */
-    @GetMapping("/list")
-    public ScrapListDTO getScrapListByName(@RequestParam String name) {
-        return scrapService.getScrapListByName(name);
+    // 식당 스크랩 목록 조회
+    @GetMapping("/restaurant/list")
+    public ResponseEntity<List<RestaurantDto>> getRestaurantScrapList(@AuthenticationPrincipal User user) {
+        List<RestaurantDto> scrapList = scrapService.getRestaurantScrapList(user.getId());
+        return ResponseEntity.ok(scrapList);
     }
 
-    /**
-     * 새로운 ScrapList를 생성하는 엔드포인트입니다.
-     *
-     * @param scrapList 생성할 ScrapList 엔티티
-     * @return 생성된 ScrapList 엔티티
-     */
-    @PostMapping("/list")
-    public ScrapList createScrapList(@RequestBody ScrapList scrapList) {
-        return scrapService.createScrapList(scrapList);
+    // 호텔 스크랩 목록 조회
+    @GetMapping("/hotel/list")
+    public ResponseEntity<List<HotelDTO>> getHotelScrapList(@AuthenticationPrincipal User user) {
+        List<HotelDTO> scrapList = scrapService.getHotelScrapList(user.getId());
+        return ResponseEntity.ok(scrapList);
     }
 
-    /**
-     * ScrapMovie 항목을 저장하는 엔드포인트입니다.
-     *
-     * @param scrapMovie 저장할 ScrapMovie 엔티티
-     * @return 저장된 ScrapMovie 엔티티
-     */
+    // 영화 스크랩 추가
     @PostMapping("/movie")
-    public ScrapMovie saveScrapMovie(@RequestBody ScrapMovie scrapMovie) {
-        return scrapService.saveScrapMovie(scrapMovie);
+    public ResponseEntity<Void> createMovieScrap(@AuthenticationPrincipal User user, @RequestBody Integer movieId) {
+        scrapService.createMovieScrap(user.getId(), movieId);
+        return ResponseEntity.ok().build();
     }
 
-    /**
-     * 주어진 ID에 해당하는 ScrapMovie 항목을 삭제하는 엔드포인트입니다.
-     *
-     * @param id 삭제할 ScrapMovie의 ID
-     */
-    @DeleteMapping("/movie/{id}")
-    public void deleteScrapMovie(@PathVariable Integer id) {
-        scrapService.deleteScrapMovie(id);
+    // 식당 스크랩 추가
+    @PostMapping("/restaurant")
+    public ResponseEntity<Void> createRestaurantScrap(@AuthenticationPrincipal User user, @RequestBody Integer restaurantId) {
+        scrapService.createRestaurantScrap(user.getId(), restaurantId);
+        return ResponseEntity.ok().build();
+    }
+
+    // 호텔 스크랩 추가
+    @PostMapping("/hotel")
+    public ResponseEntity<Void> createHotelScrap(@AuthenticationPrincipal User user, @RequestBody Integer hotelId) {
+        scrapService.createHotelScrap(user.getId(), hotelId);
+        return ResponseEntity.ok().build();
+    }
+
+    // 스크랩 삭제
+    @DeleteMapping("/{scrapListId}/movie/{movieId}")
+    public ResponseEntity<Void> deleteMovieScrap(@PathVariable Integer scrapListId, @PathVariable Integer movieId) {
+        scrapService.deleteMovieScrap(scrapListId, movieId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{scrapListId}/restaurant/{restaurantId}")
+    public ResponseEntity<Void> deleteRestaurantScrap(@PathVariable Integer scrapListId, @PathVariable Integer restaurantId) {
+        scrapService.deleteRestaurantScrap(scrapListId, restaurantId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{scrapListId}/hotel/{hotelId}")
+    public ResponseEntity<Void> deleteHotelScrap(@PathVariable Integer scrapListId, @PathVariable Integer hotelId) {
+        scrapService.deleteHotelScrap(scrapListId, hotelId);
+        return ResponseEntity.ok().build();
     }
 }

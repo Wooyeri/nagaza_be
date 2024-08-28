@@ -1,5 +1,6 @@
 package com.rookies2.nagaza.service.impl;
 
+import com.rookies2.nagaza.dto.RestaurantDetailDTO;
 import com.rookies2.nagaza.dto.RestaurantDto;
 import com.rookies2.nagaza.entity.Restaurant;
 import com.rookies2.nagaza.entity.RestaurantLike;
@@ -13,7 +14,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService, LikeService<RestaurantDto> {
@@ -28,10 +31,23 @@ public class RestaurantServiceImpl implements RestaurantService, LikeService<Res
     private UserRepository userRepository;
 
     @Override
+    public List<RestaurantDto> getAllRestaurants() {
+        return restaurantRepository.findAll().stream()
+                .map(RestaurantDto::new)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
     public RestaurantDto getRestaurantList(int id) {
         Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
-
         return new RestaurantDto(restaurant);
+    }
+
+    @Override
+    public RestaurantDetailDTO getRestaurantDetail(int id) {
+        Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
+        return new RestaurantDetailDTO(restaurant);
     }
 
     @Override
