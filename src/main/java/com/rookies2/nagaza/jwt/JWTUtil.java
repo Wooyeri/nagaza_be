@@ -1,5 +1,7 @@
 package com.rookies2.nagaza.jwt;
 
+import io.jsonwebtoken.Jwts;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Jwts;
@@ -9,6 +11,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
+@Slf4j
 public class JWTUtil {
 
     private SecretKey secretKey;
@@ -33,9 +36,9 @@ public class JWTUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
-
     public String createJwt(String username, String role, Long expiredMs) {
 
+        log.error("!!!!!!!!!!!!!! {} ", username);
         return Jwts.builder()
                 .claim("username", username)
                 .claim("role", role)

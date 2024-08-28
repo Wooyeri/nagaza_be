@@ -11,9 +11,15 @@ public class CustomUserDetails  implements UserDetails {
 
     private final User user;
 
+<<<<<<< HEAD
     public CustomUserDetails(User user) {
 
         this.user = user;
+=======
+    public CustomUserDetails(User userEntity) {
+
+        this.user = userEntity;
+>>>>>>> e18b0e4535541d9dda35cd83c2c8bc2837c8666e
     }
 
 
