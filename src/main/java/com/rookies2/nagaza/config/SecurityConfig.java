@@ -43,9 +43,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        //csrf disable
-        http
-                .csrf((auth) -> auth.disable());
 
         //From 로그인 방식 disable
         http
@@ -60,14 +57,19 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/login", "/", "/joinProc","/join").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/api/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated());
-
-
 
 //        http
 //                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
+        //csrf disable
+        http
+                .csrf((auth) -> auth.disable());
         http
                 .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+
+        http
+                .addFilterBefore(new JWTFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
 
         //세션 설정
         http
@@ -77,3 +79,4 @@ public class SecurityConfig {
         return http.build();
     }
 }
+
