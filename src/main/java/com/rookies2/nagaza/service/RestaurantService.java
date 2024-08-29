@@ -8,5 +8,5 @@ public interface RestaurantService {
     RestaurantDto getRestaurantList(int id);
     RestaurantDto toggleLike(Integer restaurantId, Integer userId);
     boolean isLiked(Integer restaurantId, Integer userId);
-    List<RestaurantDto> getLikedRestaurants(Integer userId);
+    List<RestaurantDto> getLikeList(Integer userId);
 }

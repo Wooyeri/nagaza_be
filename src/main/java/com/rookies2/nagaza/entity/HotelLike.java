@@ -1,9 +1,11 @@
 package com.rookies2.nagaza.entity;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "HOTEL_LIKE")
+@NoArgsConstructor
 public class HotelLike {
 
     @Id
@@ -18,5 +20,8 @@ public class HotelLike {
     @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
 
-    // Getters and Setters
+    public HotelLike(User user, Hotel hotel){
+        this.user = user;
+        this.hotel = hotel;
+    }
 }

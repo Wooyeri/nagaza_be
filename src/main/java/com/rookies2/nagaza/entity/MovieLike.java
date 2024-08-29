@@ -1,9 +1,11 @@
 package com.rookies2.nagaza.entity;
 
 import jakarta.persistence.*;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "MOVIE_LIKE")
+@NoArgsConstructor
 public class MovieLike {
 
     @Id
@@ -18,5 +20,8 @@ public class MovieLike {
     @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
-    // Getters and Setters
+    public MovieLike(User user, Movie movie){
+        this.user = user;
+        this.movie = movie;
+    }
 }

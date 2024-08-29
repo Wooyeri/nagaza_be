@@ -80,7 +80,7 @@ public class RestaurantServiceImpl implements RestaurantService, LikeService<Res
     }
 
     @Override
-    public List<RestaurantDto> getLikedRestaurants(Integer userId) {
+    public List<RestaurantDto> getLikeList(Integer userId) {
         List<Restaurant> likedRestaurants = restaurantLikeRepository.findRestaurantsByUserId(userId);
         return likedRestaurants.stream()
                 .map(restaurant -> restaurantMapper.toDto(restaurant))

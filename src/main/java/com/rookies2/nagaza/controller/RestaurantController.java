@@ -37,7 +37,7 @@ public class RestaurantController {
 
     @GetMapping("/likes")
     public ResponseEntity<List<RestaurantDto>> getLikedRestaurants(@RequestParam Integer userId) {
-        List<RestaurantDto> likedRestaurants = restaurantService.getLikedRestaurants(userId);
+        List<RestaurantDto> likedRestaurants = restaurantService.getLikeList(userId);
         return ResponseEntity.ok(likedRestaurants);
     }
 }

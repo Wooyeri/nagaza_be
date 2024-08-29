@@ -1,9 +1,11 @@
 package com.rookies2.nagaza.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
 @Table(name = "MOVIE")
+@Data
 public class Movie {
 
     @Id
