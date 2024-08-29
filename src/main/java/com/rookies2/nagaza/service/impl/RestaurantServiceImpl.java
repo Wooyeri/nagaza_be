@@ -4,6 +4,7 @@ import com.rookies2.nagaza.dto.RestaurantDto;
 import com.rookies2.nagaza.entity.Restaurant;
 import com.rookies2.nagaza.entity.RestaurantLike;
 import com.rookies2.nagaza.entity.User;
+import com.rookies2.nagaza.mapper.RestaurantMapper;
 import com.rookies2.nagaza.repository.RestaurantLikeRepository;
 import com.rookies2.nagaza.repository.RestaurantRepository;
 import com.rookies2.nagaza.repository.UserRepository;
@@ -13,7 +14,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class RestaurantServiceImpl implements RestaurantService, LikeService<RestaurantDto> {
@@ -26,6 +29,13 @@ public class RestaurantServiceImpl implements RestaurantService, LikeService<Res
 
     @Autowired
     private UserRepository userRepository;
+
+    private final RestaurantMapper restaurantMapper;
+
+    @Autowired
+    public RestaurantServiceImpl(RestaurantMapper restaurantMapper) {
+        this.restaurantMapper = restaurantMapper;
+    }
 
     @Override
     public RestaurantDto getRestaurantList(int id) {
@@ -67,5 +77,13 @@ public class RestaurantServiceImpl implements RestaurantService, LikeService<Res
     public boolean isLiked(Integer restaurantId, Integer userId) {
         // 특정 식당과 사용자 ID를 기준으로 좋아요 여부를 체크합니다.
         return restaurantLikeRepository.findByUserIdAndRestaurantId(userId, restaurantId).isPresent();
+    }
+
+    @Override
+    public List<RestaurantDto> getLikedRestaurants(Integer userId) {
+        List<Restaurant> likedRestaurants = restaurantLikeRepository.findRestaurantsByUserId(userId);
+        return likedRestaurants.stream()
+                .map(restaurant -> restaurantMapper.toDto(restaurant))
+                .collect(Collectors.toList());
     }
 }
