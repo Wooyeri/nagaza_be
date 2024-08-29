@@ -11,6 +11,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -38,15 +39,14 @@ public class ScrapServiceImpl implements ScrapService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("User not found"));
 
-        //  const category = 'movie'; 프론트에서 이런식으로 카테고리마다 설정 ...
-
-        switch (category) {
+        switch (category.toLowerCase()) {  // 소문자로 변환하여 카테고리 일관성 유지
             case "movie":
                 Optional<ScrapMovie> existingMovieScrap = scrapMovieRepository.findByUserAndMovieId(user, itemId);
                 if (existingMovieScrap.isPresent()) {
                     scrapMovieRepository.delete(existingMovieScrap.get());
                 } else {
-                    ScrapMovie newMovieScrap = new ScrapMovie(user, movieRepository.findById(itemId).orElseThrow());
+                    ScrapMovie newMovieScrap = new ScrapMovie(user, movieRepository.findById(itemId)
+                            .orElseThrow(() -> new EntityNotFoundException("Movie not found")));
                     scrapMovieRepository.save(newMovieScrap);
                 }
                 break;
@@ -56,7 +56,8 @@ public class ScrapServiceImpl implements ScrapService {
                 if (existingHotelScrap.isPresent()) {
                     scrapHotelRepository.delete(existingHotelScrap.get());
                 } else {
-                    ScrapHotel newHotelScrap = new ScrapHotel(user, hotelRepository.findById(itemId).orElseThrow());
+                    ScrapHotel newHotelScrap = new ScrapHotel(user, hotelRepository.findById(itemId)
+                            .orElseThrow(() -> new EntityNotFoundException("Hotel not found")));
                     scrapHotelRepository.save(newHotelScrap);
                 }
                 break;
@@ -66,40 +67,75 @@ public class ScrapServiceImpl implements ScrapService {
                 if (existingRestaurantScrap.isPresent()) {
                     scrapRestaurantRepository.delete(existingRestaurantScrap.get());
                 } else {
-                    ScrapRestaurant newRestaurantScrap = new ScrapRestaurant(user, restaurantRepository.findById(itemId).orElseThrow());
+                    ScrapRestaurant newRestaurantScrap = new ScrapRestaurant(user, restaurantRepository.findById(itemId)
+                            .orElseThrow(() -> new EntityNotFoundException("Restaurant not found")));
                     scrapRestaurantRepository.save(newRestaurantScrap);
                 }
                 break;
 
             default:
-                throw new IllegalArgumentException("Invalid category");
+                throw new IllegalArgumentException("Invalid category: " + category);
         }
     }
 
     @Override
     public List<ScrapDTO> getScrapList(Integer userId, String category) {
-        switch (category) {
+        switch (category.toLowerCase()) {
             case "movie":
-                List<ScrapMovie> movieScraps = scrapMovieRepository.findByUserId(userId);
-                return movieScraps.stream().map(this::convertToDto).collect(Collectors.toList());
-
+                return getMovieScraps(userId);
             case "hotel":
-                List<ScrapHotel> hotelScraps = scrapHotelRepository.findByUserId(userId);
-                return hotelScraps.stream().map(this::convertToDto).collect(Collectors.toList());
-
+                return getHotelScraps(userId);
             case "restaurant":
-                List<ScrapRestaurant> restaurantScraps = scrapRestaurantRepository.findByUserId(userId);
-                return restaurantScraps.stream().map(this::convertToDto).collect(Collectors.toList());
-
+                return getRestaurantScraps(userId);
             default:
-                throw new IllegalArgumentException("Invalid category");
+                throw new IllegalArgumentException("Invalid category: " + category);
         }
     }
+    @Override
+    public List<ScrapDTO> getMovieScraps(Integer userId) {
+        List<ScrapMovie> movieScraps = scrapMovieRepository.findByUserId(userId);
+        return movieScraps.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ScrapDTO> getHotelScraps(Integer userId) {
+        List<ScrapHotel> hotelScraps = scrapHotelRepository.findByUserId(userId);
+        return hotelScraps.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ScrapDTO> getRestaurantScraps(Integer userId) {
+        List<ScrapRestaurant> restaurantScraps = scrapRestaurantRepository.findByUserId(userId);
+        return restaurantScraps.stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
+    }
+    @Override
+    public boolean isScrap(Integer itemId, Integer userId, String category) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+        switch (category.toLowerCase()) {
+            case "movie":
+                return scrapMovieRepository.findByUserAndMovieId(user, itemId).isPresent();
+            case "hotel":
+                return scrapHotelRepository.findByUserAndHotelId(user, itemId).isPresent();
+            case "restaurant":
+                return scrapRestaurantRepository.findByUserAndRestaurantId(user, itemId).isPresent();
+            default:
+                throw new IllegalArgumentException("Invalid category: " + category);
+        }
+    }
+
     private ScrapDTO convertToDto(ScrapMovie scrapMovie) {
         ScrapDTO dto = new ScrapDTO();
         dto.setId(scrapMovie.getId());
         dto.setTitle(scrapMovie.getMovie().getTitle());
-//        dto.setCategory("movie");
+        dto.setCategory("movie");
         dto.setPosterUrl(scrapMovie.getMovie().getPosterUrl());
         // 리뷰요약을 설명으로 대체할 계획
         dto.setDescription(scrapMovie.getMovie().getReviewSummary());
@@ -120,7 +156,7 @@ public class ScrapServiceImpl implements ScrapService {
         ScrapDTO dto = new ScrapDTO();
         dto.setId(scrapRestaurant.getId());
         dto.setTitle(scrapRestaurant.getRestaurant().getName());
-//        dto.setCategory("restaurant");
+        dto.setCategory("restaurant");
         dto.setPosterUrl(scrapRestaurant.getRestaurant().getPosterUrl());
         // 리뷰요약을 설명으로 대체할 계획
         dto.setDescription(scrapRestaurant.getRestaurant().getReviewSummary());
