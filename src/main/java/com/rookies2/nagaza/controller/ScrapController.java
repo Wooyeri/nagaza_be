@@ -49,7 +49,6 @@ public class ScrapController {
             List<ScrapDTO> scrapList = scrapService.getScrapList(userId, singleCategory);
             return ResponseEntity.ok(scrapList);
         } catch (IllegalArgumentException e) {
-            log.error("Invalid argument: " + e.getMessage());
             return ResponseEntity.badRequest().body(null);
         }
     }
