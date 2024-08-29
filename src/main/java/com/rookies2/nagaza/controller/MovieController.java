@@ -17,6 +17,33 @@ public class MovieController {
     @Autowired
     private MovieService movieService;
 
+    /**
+     * 모든 영화를 조회하는 엔드포인트입니다.
+     *
+     * @return 모든 MovieDTO의 목록
+     */
+    @GetMapping
+    public List<MovieDTO> getAllMovies() {
+        return movieService.getAllMovies();
+    }
+
+    /**
+     * 특정 ID에 해당하는 영화를 조회하는 엔드포인트입니다.
+     *
+     * @param id 조회할 Movie의 ID
+     * @return 조회된 MovieDetailDTO 또는 null
+     */
+
+    @GetMapping("/{id}")
+    public ResponseEntity<MovieDetailDTO> getMovieDetail(@PathVariable Integer id) {
+        MovieDetailDTO movie = movieService.getMovieDetailById(id); // 수정된 부분
+        if (movie == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(movie);
+    }
+
+
     @PostMapping("/like/{id}")
     public ResponseEntity<MovieDTO> toggleMovieLike(@PathVariable("id") Integer movieId, @RequestParam Integer userId) {
         MovieDTO movieDto = movieService.toggleLike(movieId, userId);
