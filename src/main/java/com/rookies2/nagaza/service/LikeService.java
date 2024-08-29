@@ -1,6 +1,6 @@
 package com.rookies2.nagaza.service;
 
-import com.rookies2.nagaza.dto.RestaurantDto;
+import com.rookies2.nagaza.dto.RestaurantDTO;
 
 import java.util.List;
 

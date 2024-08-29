@@ -1,10 +1,6 @@
 package com.rookies2.nagaza.dto;
 
 import com.rookies2.nagaza.entity.Hotel;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class HotelDto {
+public class HotelDTO {
     private Integer id;
     private String name;
     private String posterUrl;
@@ -23,7 +19,7 @@ public class HotelDto {
     private Integer emotionRating;
     private Integer likeCount;
 
-    public HotelDto(Hotel hotel) {
+    public HotelDTO(Hotel hotel) {
         if (hotel != null) {
             this.id = hotel.getId();
             this.name = hotel.getName();

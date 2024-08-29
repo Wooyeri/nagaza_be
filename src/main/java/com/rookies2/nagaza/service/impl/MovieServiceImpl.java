@@ -1,6 +1,6 @@
 package com.rookies2.nagaza.service.impl;
 
-import com.rookies2.nagaza.dto.MovieDto;
+import com.rookies2.nagaza.dto.MovieDTO;
 import com.rookies2.nagaza.entity.*;
 import com.rookies2.nagaza.mapper.MovieMapper;
 import com.rookies2.nagaza.repository.MovieLikeRepository;
@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class MovieServiceImpl implements MovieService, LikeService<MovieDto> {
+public class MovieServiceImpl implements MovieService, LikeService<MovieDTO> {
 
     @Autowired
     private MovieRepository movieRepository;
@@ -34,7 +34,7 @@ public class MovieServiceImpl implements MovieService, LikeService<MovieDto> {
         this.movieMapper = movieMapper;
     }
     @Override
-    public MovieDto toggleLike(Integer movieId, Integer userId) {
+    public MovieDTO toggleLike(Integer movieId, Integer userId) {
         Movie movie = movieRepository.findById(movieId)
                 .orElseThrow(() -> new EntityNotFoundException("movie not found"));
         User user = userRepository.findById(userId)
@@ -57,7 +57,7 @@ public class MovieServiceImpl implements MovieService, LikeService<MovieDto> {
         movieRepository.save(movie);
 
         // DTO로 변환해서 반환합니다.
-        return new MovieDto(movie);
+        return new MovieDTO(movie);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class MovieServiceImpl implements MovieService, LikeService<MovieDto> {
     }
 
     @Override
-    public List<MovieDto> getLikeList(Integer userId) {
+    public List<MovieDTO> getLikeList(Integer userId) {
         List<Movie> likedMovies = movieLikeRepository.findMovieByUserId(userId);
         return likedMovies.stream()
                 .map(movie -> movieMapper.toDto(movie))

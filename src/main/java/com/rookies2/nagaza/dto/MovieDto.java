@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class MovieDto {
+public class MovieDTO {
     private Integer id;
     private String title;
     private String posterUrl;
@@ -19,7 +19,8 @@ public class MovieDto {
     private String reviews;
     private Integer emotionRating;
     private Integer likeCount;
-    public MovieDto(Movie movie) {
+
+    public MovieDTO(Movie movie) {
         if (movie != null) {
             this.id = movie.getId();
             this.title = movie.getTitle();

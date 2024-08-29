@@ -1,6 +1,6 @@
 package com.rookies2.nagaza.service.impl;
 
-import com.rookies2.nagaza.dto.HotelDto;
+import com.rookies2.nagaza.dto.HotelDTO;
 import com.rookies2.nagaza.entity.*;
 import com.rookies2.nagaza.mapper.HotelMapper;
 import com.rookies2.nagaza.repository.HotelLikeRepository;
@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class HotelServiceImpl implements HotelService, LikeService<HotelDto> {
+public class HotelServiceImpl implements HotelService, LikeService<HotelDTO> {
     @Autowired
     private HotelRepository hotelRepository;
 
@@ -33,7 +33,7 @@ public class HotelServiceImpl implements HotelService, LikeService<HotelDto> {
         this.hotelMapper = hotelMapper;
     }
     @Override
-    public HotelDto toggleLike(Integer hotelId, Integer userId) {
+    public HotelDTO toggleLike(Integer hotelId, Integer userId) {
         Hotel hotel = hotelRepository.findById(hotelId)
                 .orElseThrow(() -> new EntityNotFoundException("hotel not found"));
         User user = userRepository.findById(userId)
@@ -56,7 +56,7 @@ public class HotelServiceImpl implements HotelService, LikeService<HotelDto> {
         hotelRepository.save(hotel);
 
         // DTO로 변환해서 반환합니다.
-        return new HotelDto(hotel);
+        return new HotelDTO(hotel);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class HotelServiceImpl implements HotelService, LikeService<HotelDto> {
     }
 
     @Override
-    public List<HotelDto> getLikeList(Integer userId) {
+    public List<HotelDTO> getLikeList(Integer userId) {
         List<Hotel> likedHotels = hotelLikeRepository.findHotelByUserId(userId);
         return likedHotels.stream()
                 .map(hotel -> hotelMapper.toDto(hotel))

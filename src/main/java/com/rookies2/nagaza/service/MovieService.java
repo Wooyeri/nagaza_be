@@ -1,12 +1,14 @@
 package com.rookies2.nagaza.service;
 
-import com.rookies2.nagaza.dto.MovieDto;
-import com.rookies2.nagaza.dto.RestaurantDto;
+
+import com.rookies2.nagaza.dto.MovieDTO;
+import com.rookies2.nagaza.dto.RestaurantDTO;
 
 import java.util.List;
 
 public interface MovieService {
-    MovieDto toggleLike(Integer movieId, Integer userId);
+    MovieDTO toggleLike(Integer movieId, Integer userId);
     boolean isLiked(Integer movieId, Integer userId);
-    List<MovieDto> getLikeList(Integer userId);
+    List<MovieDTO> getLikeList(Integer userId);
 }
+

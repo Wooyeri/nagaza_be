@@ -1,6 +1,6 @@
 package com.rookies2.nagaza.service.impl;
 
-import com.rookies2.nagaza.dto.RestaurantDto;
+import com.rookies2.nagaza.dto.RestaurantDTO;
 import com.rookies2.nagaza.entity.Restaurant;
 import com.rookies2.nagaza.entity.RestaurantLike;
 import com.rookies2.nagaza.entity.User;
@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class RestaurantServiceImpl implements RestaurantService, LikeService<RestaurantDto> {
+public class RestaurantServiceImpl implements RestaurantService, LikeService<RestaurantDTO> {
 
     @Autowired
     private RestaurantRepository restaurantRepository;
@@ -38,14 +38,14 @@ public class RestaurantServiceImpl implements RestaurantService, LikeService<Res
     }
 
     @Override
-    public RestaurantDto getRestaurantList(int id) {
+    public RestaurantDTO getRestaurantList(int id) {
         Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
 
-        return new RestaurantDto(restaurant);
+        return new RestaurantDTO(restaurant);
     }
 
     @Override
-    public RestaurantDto toggleLike(Integer restaurantId, Integer userId) {
+    public RestaurantDTO toggleLike(Integer restaurantId, Integer userId) {
         // 식당과 유저 엔티티를 가져옵니다.
         Restaurant restaurant = restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new EntityNotFoundException("Restaurant not found"));
@@ -70,7 +70,7 @@ public class RestaurantServiceImpl implements RestaurantService, LikeService<Res
         restaurantRepository.save(restaurant);
 
         // DTO로 변환해서 반환합니다.
-        return new RestaurantDto(restaurant);
+        return new RestaurantDTO(restaurant);
     }
 
     @Override
@@ -80,7 +80,7 @@ public class RestaurantServiceImpl implements RestaurantService, LikeService<Res
     }
 
     @Override
-    public List<RestaurantDto> getLikeList(Integer userId) {
+    public List<RestaurantDTO> getLikeList(Integer userId) {
         List<Restaurant> likedRestaurants = restaurantLikeRepository.findRestaurantsByUserId(userId);
         return likedRestaurants.stream()
                 .map(restaurant -> restaurantMapper.toDto(restaurant))

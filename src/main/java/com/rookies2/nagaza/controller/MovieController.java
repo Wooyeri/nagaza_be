@@ -1,6 +1,8 @@
 package com.rookies2.nagaza.controller;
 
-import com.rookies2.nagaza.dto.MovieDto;
+import com.rookies2.nagaza.dto.MovieDTO;
+import com.rookies2.nagaza.dto.MovieDetailDTO;
+import com.rookies2.nagaza.entity.Movie;
 import com.rookies2.nagaza.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +18,8 @@ public class MovieController {
     private MovieService movieService;
 
     @PostMapping("/like/{id}")
-    public ResponseEntity<MovieDto> toggleMovieLike(@PathVariable("id") Integer movieId, @RequestParam Integer userId) {
-        MovieDto movieDto = movieService.toggleLike(movieId, userId);
+    public ResponseEntity<MovieDTO> toggleMovieLike(@PathVariable("id") Integer movieId, @RequestParam Integer userId) {
+        MovieDTO movieDto = movieService.toggleLike(movieId, userId);
         return ResponseEntity.ok(movieDto);
     }
 
@@ -26,10 +28,10 @@ public class MovieController {
         boolean isLiked = movieService.isLiked(movieId, userId);
         return ResponseEntity.ok(isLiked);
     }
-    
+
     @GetMapping("/likes")
-    public ResponseEntity<List<MovieDto>> getLikedMovies(@RequestParam Integer userId) {
-        List<MovieDto> likedMovies = movieService.getLikeList(userId);
+    public ResponseEntity<List<MovieDTO>> getLikedMovies(@RequestParam Integer userId) {
+        List<MovieDTO> likedMovies = movieService.getLikeList(userId);
         return ResponseEntity.ok(likedMovies);
     }
 }

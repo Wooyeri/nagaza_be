@@ -1,6 +1,6 @@
 package com.rookies2.nagaza.controller;
 
-import com.rookies2.nagaza.dto.RestaurantDto;
+import com.rookies2.nagaza.dto.RestaurantDTO;
 import com.rookies2.nagaza.service.RestaurantService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +17,15 @@ public class RestaurantController {
     private RestaurantService restaurantService;
 
     @GetMapping("/test/{id}")
-    public ResponseEntity<RestaurantDto> getList(@PathVariable int id){
-        RestaurantDto dto = restaurantService.getRestaurantList(id);
+    public ResponseEntity<RestaurantDTO> getList(@PathVariable int id){
+        RestaurantDTO dto = restaurantService.getRestaurantList(id);
 
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping("/like/{id}")
-    public ResponseEntity<RestaurantDto> toggleRestaurantLike(@PathVariable("id") Integer restaurantId, @RequestParam Integer userId) {
-        RestaurantDto restaurantDto = restaurantService.toggleLike(restaurantId, userId);
+    public ResponseEntity<RestaurantDTO> toggleRestaurantLike(@PathVariable("id") Integer restaurantId, @RequestParam Integer userId) {
+        RestaurantDTO restaurantDto = restaurantService.toggleLike(restaurantId, userId);
         return ResponseEntity.ok(restaurantDto);
     }
 
@@ -36,8 +36,8 @@ public class RestaurantController {
     }
 
     @GetMapping("/likes")
-    public ResponseEntity<List<RestaurantDto>> getLikedRestaurants(@RequestParam Integer userId) {
-        List<RestaurantDto> likedRestaurants = restaurantService.getLikeList(userId);
+    public ResponseEntity<List<RestaurantDTO>> getLikedRestaurants(@RequestParam Integer userId) {
+        List<RestaurantDTO> likedRestaurants = restaurantService.getLikeList(userId);
         return ResponseEntity.ok(likedRestaurants);
     }
 }
