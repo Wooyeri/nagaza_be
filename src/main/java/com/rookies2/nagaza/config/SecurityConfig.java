@@ -6,6 +6,7 @@ import com.rookies2.nagaza.jwt.LoginFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -14,6 +15,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -26,6 +32,19 @@ public class SecurityConfig {
 
         this.authenticationConfiguration = authenticationConfiguration;
         this.jwtUtil = jwtUtil;
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setExposedHeaders(Arrays.asList("Authorization"));
+        configuration.setAllowCredentials(true);
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean
@@ -45,26 +64,16 @@ public class SecurityConfig {
 
         //csrf disable
         http
-                .csrf((auth) -> auth.disable());
-
+                .csrf((auth) -> auth.disable())
         //From 로그인 방식 disable
-        http
-                .formLogin((auth) -> auth.disable());
-
+                .formLogin((auth) -> auth.disable())
         //http basic 인증 방식 disable
-        http
-                .httpBasic((auth) -> auth.disable());
-
-
-        http
+                .httpBasic((auth) -> auth.disable())
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/login", "/", "/joinProc","/join").permitAll()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/api/**").hasAnyRole("ADMIN", "USER")
                         .anyRequest().authenticated());
-
-
-
 //        http
 //                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
         http
@@ -77,6 +86,7 @@ public class SecurityConfig {
         http
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.cors(Customizer.withDefaults());
 
         return http.build();
     }
