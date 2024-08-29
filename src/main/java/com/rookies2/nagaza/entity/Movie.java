@@ -38,10 +38,6 @@ public class Movie {
     private Integer likeCount;  // 좋아요 수
 
     private String director;
-
-
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ScrapMovie> scrapMovies;  // 스크랩된 영화 리스트
 }
 
 
