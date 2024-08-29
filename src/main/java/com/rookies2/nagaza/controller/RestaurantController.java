@@ -22,16 +22,16 @@ public class RestaurantController {
      *
      * @return 모든 RestaurantDTO의 목록
      */
-    @GetMapping
-    public List<RestaurantDTO> getAllRestaurants() {
-        return restaurantService.getAllRestaurants();
-    }
+//    @GetMapping
+//    public List<RestaurantDTO> getAllRestaurants() {
+//        return restaurantService.getAllRestaurants();
+//    }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<RestaurantDetailDTO> getDetail(@PathVariable int id) {
-        RestaurantDetailDTO dto = restaurantService.getRestaurantDetail(id);
-        return ResponseEntity.ok(dto);
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<RestaurantDetailDTO> getDetail(@PathVariable int id) {
+//        RestaurantDetailDTO dto = restaurantService.getRestaurantDetail(id);
+//        return ResponseEntity.ok(dto);
+//    }
 
     @GetMapping("/test/{id}")
     public ResponseEntity<RestaurantDTO> getList(@PathVariable int id){
