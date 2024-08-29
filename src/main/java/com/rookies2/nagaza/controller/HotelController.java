@@ -16,6 +16,32 @@ public class HotelController {
     @Autowired
     private HotelService hotelService;
 
+    /**
+     * 모든 호텔을 조회하는 엔드포인트입니다.
+     *
+     * @return 모든 HotelDTO의 목록
+     */
+    @GetMapping
+    public List<HotelDTO> getAllHotels() {
+        return hotelService.getAllHotels();
+    }
+
+    /**
+     * 특정 ID에 해당하는 호텔을 조회하는 엔드포인트입니다.
+     *
+     * @param id 조회할 호텔의 ID
+     * @return 조회된 HotelDetailDTO 또는 null
+     */
+
+    @GetMapping("/{id}")
+    public ResponseEntity<HotelDetailDTO> getHotelDetail(@PathVariable Integer id) {
+        HotelDetailDTO hotel = hotelService.getHotelDetailById(id);
+        if (hotel == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(hotel);
+    }
+
     @PostMapping("/like/{id}")
     public ResponseEntity<HotelDTO> toggleHotelLike(@PathVariable("id") Integer hotelId, @RequestParam Integer userId) {
         HotelDTO hotelDto = hotelService.toggleLike(hotelId, userId);
