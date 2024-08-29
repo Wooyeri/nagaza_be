@@ -40,8 +40,8 @@ public class Movie {
     private String director;
 
 
-    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ScrapMovie> scrapMovies;  // 스크랩된 영화 리스트
+//    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<ScrapMovie> scrapMovies;  // 스크랩된 영화 리스트
 }
 
 

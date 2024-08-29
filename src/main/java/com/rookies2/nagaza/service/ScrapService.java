@@ -1,19 +1,13 @@
 package com.rookies2.nagaza.service;
 
-import com.rookies2.nagaza.dto.MovieDTO;
-import com.rookies2.nagaza.dto.ScrapListDTO;
-import com.rookies2.nagaza.entity.ScrapList;
-import com.rookies2.nagaza.entity.ScrapMovie;
-import com.rookies2.nagaza.repository.ScrapListRepository;
-import com.rookies2.nagaza.repository.ScrapMovieRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+
+import com.rookies2.nagaza.dto.ScrapDTO;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
-@Service
-public class ScrapService {
+public interface ScrapService {
+    void toggleScrap(Integer itemId, Integer userId, String category);
+    List<ScrapDTO> getScrapList(Integer userId, String category);
 
 }
 
