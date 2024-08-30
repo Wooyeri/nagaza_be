@@ -2,9 +2,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "feature/dockerAndActions" ]
   pull_request:
-    branches: [ "develop" ]
+    branches: [ "feature/dockerAndActions" ]
 
 env:
   DOCKER_IMAGE: nagaza
