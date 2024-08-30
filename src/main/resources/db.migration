@@ -1,0 +1,49 @@
+Hibernate: alter table if exists hotel_like drop foreign key if exists FKklgxigf4ofr613xe5alwbp6ae
+Hibernate: alter table if exists hotel_like drop foreign key if exists FK9abmn0st7qw1t83i7gfvu2hdf
+Hibernate: alter table if exists movie_like drop foreign key if exists FKdglb6nfnx6ge9ogjlb6dqb63m
+Hibernate: alter table if exists movie_like drop foreign key if exists FKpihe3cwejhxx5vjfbwl8fcsek
+Hibernate: alter table if exists restaurant_like drop foreign key if exists FK2bgf3jrj4mery9cnfugy8v05n
+Hibernate: alter table if exists restaurant_like drop foreign key if exists FKa9tb56sowaqsr2886vu98m39b
+Hibernate: alter table if exists scrap_hotel drop foreign key if exists FK6abocqfci0k99ktbq43g3ltum
+Hibernate: alter table if exists scrap_hotel drop foreign key if exists FK6qjgv0ekhcu0u3yx19l81ni6m
+Hibernate: alter table if exists scrap_list drop foreign key if exists FKbqtfodt7fb24lbbq73fxdgkn0
+Hibernate: alter table if exists scrap_movie drop foreign key if exists FKmymo4b3xl9e0fqg8tjetmpb5q
+Hibernate: alter table if exists scrap_movie drop foreign key if exists FKp4uxdlyotig87g28qs8r9nwu2
+Hibernate: alter table if exists scrap_restaurant drop foreign key if exists FKn7j17s7u2bijhqqxmce7r8jcw
+Hibernate: alter table if exists scrap_restaurant drop foreign key if exists FKd9yrxpkoul34m9qyph1lo3nlx
+Hibernate: drop table if exists hotel
+Hibernate: drop table if exists hotel_like
+Hibernate: drop table if exists movie
+Hibernate: drop table if exists movie_like
+Hibernate: drop table if exists restaurant
+Hibernate: drop table if exists restaurant_like
+Hibernate: drop table if exists scrap_hotel
+Hibernate: drop table if exists scrap_list
+Hibernate: drop table if exists scrap_movie
+Hibernate: drop table if exists scrap_restaurant
+Hibernate: drop table if exists user
+Hibernate: create table hotel (emotion_rating integer, id integer not null auto_increment, like_count integer, detailed_url varchar(1000), poster_url varchar(1000), review_summary varchar(1000), reviews varchar(1000), location varchar(255), name varchar(255) not null, primary key (id)) engine=InnoDB
+Hibernate: create table hotel_like (hotel_id integer not null, id integer not null auto_increment, user_id integer not null, primary key (id)) engine=InnoDB
+Hibernate: create table movie (emotion_rating integer, id integer not null auto_increment, like_count integer, poster_url varchar(1000), review_summary varchar(1000), reviews varchar(1000), cast varchar(255), director varchar(255), rating varchar(255), title varchar(255) not null, primary key (id)) engine=InnoDB
+Hibernate: create table movie_like (id integer not null auto_increment, movie_id integer not null, user_id integer not null, primary key (id)) engine=InnoDB
+Hibernate: create table restaurant (emotion_rating integer, id integer not null auto_increment, like_count integer, poster_url varchar(1000), review_summary varchar(1000), reviews varchar(1000), food_type varchar(255), name varchar(255) not null, primary key (id)) engine=InnoDB
+Hibernate: create table restaurant_like (id integer not null auto_increment, restaurant_id integer not null, user_id integer not null, primary key (id)) engine=InnoDB
+Hibernate: create table scrap_hotel (hotel_id integer not null, id integer not null auto_increment, scrap_list_id integer not null, primary key (id)) engine=InnoDB
+Hibernate: create table scrap_list (id integer not null auto_increment, user_id integer not null, name varchar(255) not null, primary key (id)) engine=InnoDB
+Hibernate: create table scrap_movie (id integer not null auto_increment, movie_id integer not null, scrap_list_id integer not null, primary key (id)) engine=InnoDB
+Hibernate: create table scrap_restaurant (id integer not null auto_increment, restaurant_id integer not null, scrap_list_id integer not null, primary key (id)) engine=InnoDB
+Hibernate: create table user (id integer not null auto_increment, email varchar(255), nickname varchar(255) not null, password varchar(255) not null, role varchar(255), username varchar(255) not null, primary key (id)) engine=InnoDB
+Hibernate: alter table if exists user add constraint UKsb8bbouer5wak8vyiiy4pf2bx unique (username)
+Hibernate: alter table if exists hotel_like add constraint FKklgxigf4ofr613xe5alwbp6ae foreign key (hotel_id) references hotel (id)
+Hibernate: alter table if exists hotel_like add constraint FK9abmn0st7qw1t83i7gfvu2hdf foreign key (user_id) references user (id)
+Hibernate: alter table if exists movie_like add constraint FKdglb6nfnx6ge9ogjlb6dqb63m foreign key (movie_id) references movie (id)
+Hibernate: alter table if exists movie_like add constraint FKpihe3cwejhxx5vjfbwl8fcsek foreign key (user_id) references user (id)
+Hibernate: alter table if exists restaurant_like add constraint FK2bgf3jrj4mery9cnfugy8v05n foreign key (restaurant_id) references restaurant (id)
+Hibernate: alter table if exists restaurant_like add constraint FKa9tb56sowaqsr2886vu98m39b foreign key (user_id) references user (id)
+Hibernate: alter table if exists scrap_hotel add constraint FK6abocqfci0k99ktbq43g3ltum foreign key (hotel_id) references hotel (id)
+Hibernate: alter table if exists scrap_hotel add constraint FK6qjgv0ekhcu0u3yx19l81ni6m foreign key (scrap_list_id) references scrap_list (id)
+Hibernate: alter table if exists scrap_list add constraint FKbqtfodt7fb24lbbq73fxdgkn0 foreign key (user_id) references user (id)
+Hibernate: alter table if exists scrap_movie add constraint FKmymo4b3xl9e0fqg8tjetmpb5q foreign key (movie_id) references movie (id)
+Hibernate: alter table if exists scrap_movie add constraint FKp4uxdlyotig87g28qs8r9nwu2 foreign key (scrap_list_id) references scrap_list (id)
+Hibernate: alter table if exists scrap_restaurant add constraint FKn7j17s7u2bijhqqxmce7r8jcw foreign key (restaurant_id) references restaurant (id)
+Hibernate: alter table if exists scrap_restaurant add constraint FKd9yrxpkoul34m9qyph1lo3nlx foreign key (scrap_list_id) references scrap_list (id)
