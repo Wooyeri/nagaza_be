@@ -1,6 +1,7 @@
 package com.rookies2.nagaza.service.impl;
 
 import com.rookies2.nagaza.dto.HotelDTO;
+import com.rookies2.nagaza.dto.HotelDetailDTO;
 import com.rookies2.nagaza.entity.*;
 import com.rookies2.nagaza.mapper.HotelMapper;
 import com.rookies2.nagaza.repository.HotelLikeRepository;
@@ -32,6 +33,42 @@ public class HotelServiceImpl implements HotelService, LikeService<HotelDTO> {
     public HotelServiceImpl(HotelMapper hotelMapper) {
         this.hotelMapper = hotelMapper;
     }
+
+    public List<HotelDTO> getAllHotels() {
+        return hotelRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public HotelDetailDTO getHotelDetailById(Integer id) {
+        Hotel hotel = hotelRepository.findById(id).orElse(null);
+        if (hotel == null) {
+            return null;
+        }
+        return convertToDetailDTO(hotel);
+    }
+
+    public Hotel getHotelEntityById(Integer id) {
+        return hotelRepository.findById(id).orElse(null);
+    }
+
+    private HotelDTO convertToDTO(Hotel hotel) {
+        return new HotelDTO(hotel); // 'hotel' 객체를 생성자에 전달
+    }
+
+    private HotelDetailDTO convertToDetailDTO(Hotel hotel) {
+        HotelDetailDTO dto = new HotelDetailDTO();
+        dto.setId(hotel.getId());
+        dto.setName(hotel.getName());
+        dto.setPosterUrl(hotel.getPosterUrl());
+        dto.setLocation(hotel.getLocation());
+        dto.setReviewSummary(hotel.getReviewSummary());
+        dto.setReviews(hotel.getReviews());
+        dto.setEmotionRating(hotel.getEmotionRating());
+        dto.setLikeCount(hotel.getLikeCount());
+        return dto;
+    }
+
     @Override
     public HotelDTO toggleLike(Integer hotelId, Integer userId) {
         Hotel hotel = hotelRepository.findById(hotelId)

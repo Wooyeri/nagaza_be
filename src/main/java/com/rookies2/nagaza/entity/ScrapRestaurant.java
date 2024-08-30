@@ -1,9 +1,13 @@
 package com.rookies2.nagaza.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "SCRAP_RESTAURANT")
+@Data
+@NoArgsConstructor
 public class ScrapRestaurant {
 
     @Id
@@ -11,12 +15,15 @@ public class ScrapRestaurant {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "scrap_list_id", nullable = false)
-    private ScrapList scrapList;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
-    // Getters and Setters
+    public ScrapRestaurant(User user, Restaurant restaurant){
+        this.user = user;
+        this.restaurant = restaurant;
+    }
 }

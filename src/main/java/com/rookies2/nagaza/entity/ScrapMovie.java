@@ -2,13 +2,12 @@ package com.rookies2.nagaza.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-/**
- * 스크랩된 영화를 나타내는 엔티티 클래스입니다.
- */
 @Entity
 @Table(name = "SCRAP_MOVIE")
 @Data
+@NoArgsConstructor
 public class ScrapMovie {
 
     @Id
@@ -16,11 +15,16 @@ public class ScrapMovie {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "scrap_list_id", nullable = false)
-    private ScrapList scrapList;  // 스크랩 리스트
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)
-    private Movie movie;  // 스크랩된 영화
+    private Movie movie;
+
+    public ScrapMovie(User user, Movie movie){
+        this.user = user;
+        this.movie = movie;
+    }
 }
 

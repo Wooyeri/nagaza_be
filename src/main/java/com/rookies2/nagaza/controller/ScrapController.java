@@ -1,71 +1,103 @@
 package com.rookies2.nagaza.controller;
 
-import com.rookies2.nagaza.dto.ScrapListDTO;
-import com.rookies2.nagaza.entity.ScrapList;
-import com.rookies2.nagaza.entity.ScrapMovie;
+import com.rookies2.nagaza.dto.ScrapDTO;
+import com.rookies2.nagaza.jwt.JWTUtil;
 import com.rookies2.nagaza.service.ScrapService;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/scrap")
 public class ScrapController {
 
+    private final ScrapService scrapService;
+
     @Autowired
-    private ScrapService scrapService;
+    private JWTUtil jwtUtil;
 
-    /**
-     * 모든 스크랩 리스트를 조회하는 엔드포인트입니다.
-     *
-     * @return 모든 ScrapListDTO의 목록
-     */
-    @GetMapping
-    public List<ScrapListDTO> getAllScrapLists() {
-        return scrapService.getAllScrapLists();
+    @Autowired
+    public ScrapController(ScrapService scrapService) {
+        this.scrapService = scrapService;
     }
 
-    /**
-     * 이름으로 스크랩 리스트를 조회하는 엔드포인트입니다.
-     *
-     * @param name 조회할 ScrapList의 이름
-     * @return 조회된 ScrapListDTO 또는 null
-     */
+    @PostMapping("/toggle")
+    public ResponseEntity<?> toggleScrap(@RequestParam Integer itemId, @RequestParam String category, HttpServletRequest request) {
+        String token = request.getHeader("Authorization").substring(7);
+        Integer userId = jwtUtil.getUserId(token);
+
+        scrapService.toggleScrap(itemId, userId, category);
+        return ResponseEntity.ok().body("스크랩 상태 변경");
+    }
+    @GetMapping("/toggle")
+    public ResponseEntity<Boolean> isScrap(
+            @RequestParam Integer itemId,
+            @RequestParam String category,
+            HttpServletRequest request) {
+        try {
+            String token = request.getHeader("Authorization").substring(7);
+            Integer userId = jwtUtil.getUserId(token);
+
+            boolean isScraped = scrapService.isScrap(itemId, userId, category);
+            return ResponseEntity.ok(isScraped);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+
     @GetMapping("/list")
-    public ScrapListDTO getScrapListByName(@RequestParam String name) {
-        return scrapService.getScrapListByName(name);
+    public ResponseEntity<List<ScrapDTO>> getScrapList(
+            @RequestParam String category, HttpServletRequest request) {
+        try {
+            String token = request.getHeader("Authorization").substring(7);
+            Integer userId = jwtUtil.getUserId(token);
+
+            List<ScrapDTO> scrapList = scrapService.getScrapList(userId, category);
+            return ResponseEntity.ok(scrapList);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
+    }
+    // 각 카테고리별 조회 엔드포인트 추가
+    @GetMapping("/movies")
+    public ResponseEntity<List<ScrapDTO>> getMovieScraps(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").substring(7);
+        Integer userId = jwtUtil.getUserId(token);
+        List<ScrapDTO> scrapList = scrapService.getMovieScraps(userId);
+        return ResponseEntity.ok(scrapList);
     }
 
-    /**
-     * 새로운 ScrapList를 생성하는 엔드포인트입니다.
-     *
-     * @param scrapList 생성할 ScrapList 엔티티
-     * @return 생성된 ScrapList 엔티티
-     */
-    @PostMapping("/list")
-    public ScrapList createScrapList(@RequestBody ScrapList scrapList) {
-        return scrapService.createScrapList(scrapList);
+    @GetMapping("/hotels")
+    public ResponseEntity<List<ScrapDTO>> getHotelScraps(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").substring(7);
+        Integer userId = jwtUtil.getUserId(token);
+        List<ScrapDTO> scrapList = scrapService.getHotelScraps(userId);
+        return ResponseEntity.ok(scrapList);
     }
 
-    /**
-     * ScrapMovie 항목을 저장하는 엔드포인트입니다.
-     *
-     * @param scrapMovie 저장할 ScrapMovie 엔티티
-     * @return 저장된 ScrapMovie 엔티티
-     */
-    @PostMapping("/movie")
-    public ScrapMovie saveScrapMovie(@RequestBody ScrapMovie scrapMovie) {
-        return scrapService.saveScrapMovie(scrapMovie);
-    }
-
-    /**
-     * 주어진 ID에 해당하는 ScrapMovie 항목을 삭제하는 엔드포인트입니다.
-     *
-     * @param id 삭제할 ScrapMovie의 ID
-     */
-    @DeleteMapping("/movie/{id}")
-    public void deleteScrapMovie(@PathVariable Integer id) {
-        scrapService.deleteScrapMovie(id);
+    @GetMapping("/restaurants")
+    public ResponseEntity<List<ScrapDTO>> getRestaurantScraps(HttpServletRequest request) {
+        String token = request.getHeader("Authorization").substring(7);
+        Integer userId = jwtUtil.getUserId(token);
+        List<ScrapDTO> scrapList = scrapService.getRestaurantScraps(userId);
+        return ResponseEntity.ok(scrapList);
     }
 }
+
+
+    //    @GetMapping("/list")
+//    public ResponseEntity<List<ScrapDTO>> getScrapList(
+//            @RequestParam Integer userId,
+//            @RequestParam String category) {
+//        try {
+//            List<ScrapDTO> scrapList = scrapService.getScrapList(userId, category);
+//            return ResponseEntity.ok(scrapList);
+//        } catch (IllegalArgumentException e) {
+//            return ResponseEntity.badRequest().body(null);
+//        }
+//    }

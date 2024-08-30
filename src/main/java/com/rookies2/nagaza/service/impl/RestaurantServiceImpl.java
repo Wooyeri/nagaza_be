@@ -1,6 +1,7 @@
 package com.rookies2.nagaza.service.impl;
 
 import com.rookies2.nagaza.dto.RestaurantDTO;
+import com.rookies2.nagaza.dto.RestaurantDetailDTO;
 import com.rookies2.nagaza.entity.Restaurant;
 import com.rookies2.nagaza.entity.RestaurantLike;
 import com.rookies2.nagaza.entity.User;
@@ -38,10 +39,23 @@ public class RestaurantServiceImpl implements RestaurantService, LikeService<Res
     }
 
     @Override
+    public List<RestaurantDTO> getAllRestaurants() {
+        return restaurantRepository.findAll().stream()
+                .map(restaurant -> restaurantMapper.toDto(restaurant))
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
     public RestaurantDTO getRestaurantList(int id) {
         Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
-
         return new RestaurantDTO(restaurant);
+    }
+
+    @Override
+    public RestaurantDetailDTO getRestaurantDetail(int id) {
+        Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
+        return new RestaurantDetailDTO(restaurant);
     }
 
     @Override

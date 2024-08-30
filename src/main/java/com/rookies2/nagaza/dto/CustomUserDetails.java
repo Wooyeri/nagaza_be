@@ -40,6 +40,9 @@ public class CustomUserDetails  implements UserDetails {
         return user.getPassword();
     }
 
+    public Integer getUserId() {
+        return user.getId();
+    }
     @Override
     public String getUsername() {
 

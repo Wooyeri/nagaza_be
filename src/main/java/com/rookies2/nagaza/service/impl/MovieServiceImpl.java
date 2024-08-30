@@ -1,6 +1,7 @@
 package com.rookies2.nagaza.service.impl;
 
 import com.rookies2.nagaza.dto.MovieDTO;
+import com.rookies2.nagaza.dto.MovieDetailDTO;
 import com.rookies2.nagaza.entity.*;
 import com.rookies2.nagaza.mapper.MovieMapper;
 import com.rookies2.nagaza.repository.MovieLikeRepository;
@@ -33,6 +34,21 @@ public class MovieServiceImpl implements MovieService, LikeService<MovieDTO> {
     public MovieServiceImpl(MovieMapper movieMapper) {
         this.movieMapper = movieMapper;
     }
+
+    public List<MovieDTO> getAllMovies() {
+        return movieRepository.findAll().stream()
+                .map(movie -> movieMapper.toDto(movie))
+                .collect(Collectors.toList());
+    }
+
+    public MovieDetailDTO getMovieDetailById(Integer id) {
+        Movie movie = movieRepository.findById(id).orElse(null);
+        if (movie == null) {
+            return null;
+        }
+        return convertToDetailDTO(movie);
+    }
+
     @Override
     public MovieDTO toggleLike(Integer movieId, Integer userId) {
         Movie movie = movieRepository.findById(movieId)
@@ -71,5 +87,20 @@ public class MovieServiceImpl implements MovieService, LikeService<MovieDTO> {
         return likedMovies.stream()
                 .map(movie -> movieMapper.toDto(movie))
                 .collect(Collectors.toList());
+    }
+
+    private MovieDetailDTO convertToDetailDTO(Movie movie) {
+        MovieDetailDTO dto = new MovieDetailDTO();
+        dto.setId(movie.getId());
+        dto.setTitle(movie.getTitle());
+        dto.setPosterUrl(movie.getPosterUrl());
+        dto.setCast(movie.getCast());
+        dto.setRating(movie.getRating());
+        dto.setEmotionRating(movie.getEmotionRating());
+        dto.setLikeCount(movie.getLikeCount());
+        dto.setReviewSummary(movie.getReviewSummary());
+        dto.setReviews(movie.getReviews());
+        dto.setDirector(movie.getDirector());
+        return dto;
     }
 }
