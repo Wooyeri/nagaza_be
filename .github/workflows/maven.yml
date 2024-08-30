@@ -10,13 +10,15 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+    - "main"
+    - "develop"
   pull_request:
     branches: [ "main" ]
 
 env:
-  DOCKER_IMAGE: springbootreactjs
-  DOCKER_TAG: 0.1
+  DOCKER_IMAGE: nagaza_be
+  DOCKER_TAG: 0.2
 
 jobs:
   build:
